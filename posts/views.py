@@ -7,11 +7,16 @@ from .serializers import PostSerializer,UserSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import PostFilter
+
 
 class PostViewSet(viewsets.ModelViewSet): # new
     permission_classes = (IsAuthorOrReadOnly,)
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('created_at')
     serializer_class = PostSerializer
+    filter_backends = [DjangoFilterBackend] 
+    filterset_class = PostFilter
     
 class UserViewSet(viewsets.ModelViewSet): # new
     permission_classes = [IsAdminUser]
