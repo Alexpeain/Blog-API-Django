@@ -9,14 +9,16 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import PostFilter
+from rest_framework.filters import SearchFilter
 
 
 class PostViewSet(viewsets.ModelViewSet): # new
     permission_classes = (IsAuthorOrReadOnly,)
     queryset = Post.objects.all().order_by('created_at')
     serializer_class = PostSerializer
-    filter_backends = [DjangoFilterBackend] 
+    filter_backends = [DjangoFilterBackend,SearchFilter] 
     filterset_class = PostFilter
+    search_fields = ['title', 'content', 'category']
     
 class UserViewSet(viewsets.ModelViewSet): # new
     permission_classes = [IsAdminUser]
